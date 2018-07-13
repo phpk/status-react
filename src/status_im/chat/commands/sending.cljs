@@ -44,6 +44,7 @@
 (defn validate-and-send
   "Validates and sends command in current chat"
   [input-text {:keys [type params] :as command} {:keys [db now random-id] :as cofx}]
+  (println "VALIDATE!!!!!!!!!!" command)
   (let [chat-id       (:current-chat-id db)
         parameter-map (commands/parse-parameters params input-text)]
     (if-let [validation-error (protocol/validate type parameter-map cofx)]

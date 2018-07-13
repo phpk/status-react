@@ -8,14 +8,17 @@
             [status-im.chat.models :as chat-model]
             [status-im.chat.models.input :as input-model]
             [status-im.chat.models.message :as message-model]
+            [status-im.extensions.registry :as registry]
             [status-im.utils.handlers-macro :as handlers-macro]))
 
 (def register
   "Register of all commands. Whenever implementing a new command,
   provide the implementation in the `status-im.chat.commands.impl.*` ns,
   and add its instance here."
-  #{(transactions/PersonalSendCommand.)
-    (transactions/PersonalRequestCommand.)})
+  (set/union
+   (registry/chat-commands)
+   #{(transactions/PersonalSendCommand.)
+     (transactions/PersonalRequestCommand.)}))
 
 (def command-id (juxt protocol/id protocol/scope))
 
@@ -100,6 +103,7 @@
                                                         access-scopes)))
                                             {}
                                             id->command)]
+    (println id->command access-scope->command-id)
     {:db (assoc db
                 :id->command              id->command
                 :access-scope->command-id access-scope->command-id)}))

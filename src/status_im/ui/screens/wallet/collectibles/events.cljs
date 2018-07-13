@@ -19,6 +19,7 @@
  (fn [{:keys [db]} [_ address {:keys [symbol amount] :as collectible}]]
    (let [items-number        (money/to-number amount)
          loaded-items-number (count (get-in db [:collectibles symbol]))]
+     (println "!!!!!" address symbol amount collectible)
      (merge (when (not= items-number loaded-items-number)
               (load-collectibles-fx (:web3 db) symbol items-number address))
             {:dispatch [:navigate-to :collectibles-list collectible]}))))
@@ -27,18 +28,22 @@
   (when (< i items-number)
     (erc721/token-of-owner-by-index web3 contract address i
                                     (fn [v1 v2]
+                                      (println "i" i v1 v2)
                                       (load-token web3 (inc i) items-number contract address symbol)
                                       (re-frame/dispatch [:load-collectible symbol (.toNumber v2)])))))
 
 (re-frame/reg-fx
  :load-collectibles-fx
  (fn [[web3 symbol items-number address]]
+   (println "collectible" symbol items-number address)
    (let [contract (:address (tokens/symbol->token :mainnet symbol))]
+     (println "tokens?" contract)
      (load-token web3 0 items-number contract address symbol))))
 
 (handlers/register-handler-fx
  :load-collectible
  (fn [_ [_ symbol token-id]]
+   (println "LOAD" symbol token-id)
    (load-collectible-fx symbol token-id)))
 
 (handlers/register-handler-fx

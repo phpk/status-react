@@ -1,6 +1,7 @@
 (ns status-im.ui.screens.wallet.collectibles.views
   (:require-macros [status-im.utils.views :refer [defview letsubs]])
-  (:require [status-im.ui.components.colors :as colors]
+  (:require [status-im.extensions.registry :as registry]
+            [status-im.ui.components.colors :as colors]
             [status-im.ui.components.list.views :as list]
             [status-im.ui.components.react :as react]
             [status-im.ui.components.status-bar.view :as status-bar]
@@ -18,6 +19,8 @@
   (letsubs [{:keys [name symbol]} [:get-screen-params]
             collectibles [:screen-collectibles]]
     [react/view {:style component.styles/flex}
+     (println "Collectibles !!!!  !!" registry/collectibles)
+     (println ":::::" (:view (first (vals (registry/collectibles)))))
      [react/view {:style component.styles/flex}
       [status-bar/status-bar]
       [toolbar/toolbar {}
@@ -26,6 +29,6 @@
       (if (seq collectibles)
         [list/flat-list {:data      collectibles
                          :key-fn    (comp str :id)
-                         :render-fn #(render-collectible symbol %)}]
+                         :render-fn (:view (first (vals (registry/collectibles))))  #_(render-collectible symbol %)}]
         [react/view {:style styles/loading-indicator}
          [react/activity-indicator {:animating true :size :large :color colors/blue}]])]]))
