@@ -100,7 +100,9 @@
                                 :handler   #(re-frame/dispatch [:navigate-to-modal :wallet-modal])}]]]
        [react/view components.styles/flex
         [components.webview-bridge/webview-bridge
-         {:ref                                   #(reset! webview %)
+         {:dapp?                                 dapp?
+          :dapp-name                             name
+          :ref                                   #(reset! webview %)
           :source                                {:uri url}
           :java-script-enabled                   true
           :bounces                               false
