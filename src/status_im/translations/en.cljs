@@ -39,7 +39,7 @@
    :status-console                       "Status Console"
 
    ;;sign in
-   :intro-text                           "Status is an open source decentralized chat and Ethereum browser"
+   :intro-text                           "Status is your gateway to the decentralized web"
    :intro-text-description               "Status is built with the help of the community to help you use all the benefits of decentralized web in your mobile phone"
    :create-account                       "Create account"
    :already-have-account                 "I already have an account"
